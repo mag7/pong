@@ -1,0 +1,41 @@
+﻿#GameScreen {
+    background-color:lightgreen;
+    width:500px;
+    height:500px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+}
+
+    #GameScreen * {
+        position: fixed;
+    }
+
+.paddle {
+    height: 50px;
+    width: 10px;
+}
+
+.left {
+    background-color: blue;
+}
+
+.right {
+    background-color: red;
+}
+
+.ball {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    background-color: black;
+}
+.leftscore {
+    top: 0px;
+    left: 0px;
+}
+
+.rightscore {
+    top: 0px;
+    left: 490px;
+}
