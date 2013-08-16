@@ -4,6 +4,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "pong", ".", "{4A4938D9-0D40-456C-9B30-9CEFD4CB17E0}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
+		ProjectReferences = "{545552f5-67e0-4bbb-9486-acc8835a4faf}|DAL.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/pong"
 		Debug.AspNetCompiler.PhysicalPath = "..\pong\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\pong\"

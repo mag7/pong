@@ -1,0 +1,24 @@
+﻿@using DAL;
+
+@{
+    Page.Title = "Title goes here";
+    Layout = "_Layout.cshtml";
+    
+    if(IsPost)
+    {
+        Response.Redirect("Game?level=" + Request["level"]);
+    }
+}
+
+
+<div id="Menu">
+    <button>Return to Login</button><br />
+    <br />
+    <form action="Menu" method="post">
+        Please choose difficulty:<br />
+    <input type="radio" name="level" value= 3 />Easy<br />
+        <input type="radio" name="level" value= 6 />Normal<br />
+        <input type="radio" name="level" value= 9 />Hard<br />
+        <input type="submit" name="submit" />
+    </form>
+</div>

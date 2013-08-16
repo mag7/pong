@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
-    class Game
+    public class Game
     {
         public int ID { get; set; }
         public int WinnerID { get; set; }

@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace DAL
 {
-    class DAO
+    public class DAO
     {
         public void Write(string statement, SqlParameter[] parameter)
         {

@@ -11,6 +11,15 @@
     position: fixed;
 }
 
+#victoryscreen {
+    background-color: dimgrey;
+    width: 1000px;
+    height: 800px;
+    position: fixed;
+    top: 0px;
+    left: 0px;    
+}
+
 .paddle {
     height: 50px;
     width: 10px;
@@ -55,3 +64,17 @@
     .button:hover {
         box-shadow: 5px 5px;
     }
+
+#LoginScreen {
+    background-color: lightgreen;
+    width: 300px;
+    height: 200px;
+    top: 0px;
+    left: 0px;
+    text-align:center;
+    font-family:sans-serif;
+}
+
+form {
+    vertical-align:middle;
+}

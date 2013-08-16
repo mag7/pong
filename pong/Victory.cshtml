@@ -1,0 +1,47 @@
+﻿@using DAL;
+
+@{
+    Page.Title = "Title goes here";
+    Layout = "_Layout.cshtml";
+    
+    int player1Score = Convert.ToInt16(Request.QueryString["player1Score"]);
+    int player2Score = Convert.ToInt16(Request.QueryString["player2Score"]);
+    
+    GameDAO game = new GameDAO();
+    UserDAO user = new UserDAO();
+
+    int player1ID = Convert.ToInt32(Session["User1ID"]);
+    int player2ID = Convert.ToInt32(Session["User2ID"]);
+    
+    user.UpdateGamesPlayed(player1ID);
+    user.UpdateGamesPlayed(player2ID);
+    if(player1Score == 5) {
+        game.GenerateGame(player1ID, player2ID, player1Score, player2Score);
+        user.UpdateGamesWon(player1ID);
+        User player1 = user.GetUser(player1ID);
+        List<Game> player1Games = game.GetGamesByUser(player1ID);   
+    }
+    else {
+        game.GenerateGame(player2ID, player1ID, player2Score, player1Score);
+        user.UpdateGamesWon(player2ID);
+        User player2 = user.GetUser(player2ID);
+        if(player2ID != null)
+        {
+            List<Game> player2Games = game.GetGamesByUser(player2ID);
+        }
+    }
+}
+
+<audio class ="victorysound"src="boing_x.wav" type="audio/wav"></audio>
+<audio class ="losersound"src="boing_x.wav" type="audio/wav"></audio>
+<div id="victoryscreen">
+    <label class="user1"></label>
+    <label class="user2"></label>
+    <label class ="leftscore"></label>
+    <label class ="rightscore"></label>
+    <span class ="paddle left"></span>
+    <span class ="paddle right"></span>
+    <span class ="ball"></span>
+    <span class="button serve">Serve</span>
+    <span class="button pause">Pause</span>
+</div>

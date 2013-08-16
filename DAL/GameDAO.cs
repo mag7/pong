@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace DAL
 {
-    class GameDAO:DAO
+    public class GameDAO : DAO
     {
         public List<Game> Read(string statement, SqlParameter[] parameter)
         {
@@ -40,5 +40,30 @@ namespace DAL
                 }
             }
         }
+
+        public void CreateGame(Game game)
+        {
+            SqlParameter[] parameter = new SqlParameter[] 
+            { new SqlParameter("@WinnerID", game.WinnerID),
+              new SqlParameter("@LoserID", game.LoserID),
+              new SqlParameter("@WinnerScore", game.WinnerScore),
+              new SqlParameter("@LoserScore", game.LoserScore),
+              new SqlParameter("@Date", DateTime.Now)
+            };
+            Write("Create_Game", parameter);
+        }
+
+        public void GenerateGame(int winnerID, int loserID, int winnerScore, int loserScore)
+        {
+            CreateGame(new Game() { WinnerID = winnerID, LoserID = loserID, WinnerScore = winnerScore, LoserScore = loserScore });
+        }
+
+        public List<Game> GetGamesByUser(int userID)
+        {
+            SqlParameter[] parameter = new SqlParameter[] { new SqlParameter("@ID", userID) };
+            return Read("Get_Games_By_User", parameter);
+        }
+
+
     }
 }

@@ -13,6 +13,9 @@ serve = $();
 pause = $();
 var paused = false;
 var startTurn = false;
+//var computerPlayer = (Session["player2ID"] == 0);
+var url = window.location.href;
+var speed = parseInt(url[url.length - 1]);
     
 $(document).ready(function () {
     leftPaddle = $(".left");
@@ -68,14 +71,30 @@ function startBall() {
     }
 }
 
+function computerTracking(ball, rightPaddle) {
+    if (ball.top + (ball.height/2) < rightPaddle.top + (rightPaddle.height / 2)) {
+        rightPaddle.ySpeed = speed*-1;
+    }
+    else if (ball.top + (ball.height/2) > rightPaddle.top + (rightPaddle.height / 2)) {
+        rightPaddle.ySpeed = speed;
+    }
+    else {
+        rightPaddle.ySpeed = 0;
+    }
+}
+
 function setupInput() {
     $(document).keydown(function (e) {
         switch (e.which) {
             case 40:
-                rightPaddle.ySpeed = rightPaddle.ySpeed || 5;
+                if (speed === 0) {
+                    rightPaddle.ySpeed = rightPaddle.ySpeed || 5;
+                }
                 break;
             case 38:
-                rightPaddle.ySpeed = rightPaddle.ySpeed || - 5;
+                if (speed === 0) {
+                    rightPaddle.ySpeed = rightPaddle.ySpeed || -5;
+                }
                 break;
             case 81:
                 leftPaddle.ySpeed = leftPaddle.ySpeed || - 5;
@@ -90,10 +109,14 @@ function setupInput() {
     $(document).keyup(function (f) {
         switch (f.which) {
             case 40:
-                rightPaddle.ySpeed = 0;
+                if (speed === 0) {
+                    rightPaddle.ySpeed = 0;
+                }
                 break;
             case 38:
-                rightPaddle.ySpeed = 0;
+                if (speed === 0) {
+                    rightPaddle.ySpeed = 0;
+                }
                 break;
             case 81:
                 leftPaddle.ySpeed = 0;
@@ -155,7 +178,12 @@ function update() {
     ball.top += ball.ySpeed;
     ball.left += ball.xSpeed;
     leftPaddle.ySpeed *= 1.05;
-    rightPaddle.ySpeed *= 1.05;
+    if (speed > 0) {
+        computerTracking(ball, rightPaddle);
+    }
+    else {
+        rightPaddle.ySpeed *= 1.05;
+    }
 }
 
 function checkPaddleBoundaries() {
@@ -174,19 +202,31 @@ function checkBallBoundaries(ball) {
         ball.ySpeed *= -1;
     }
     if (ball.left < 0) {
-        rightPaddle.score++;
-        sounds.score.play();
-        startTurn = true;
-        paused = true;
-        startBall();
-        pauseServeToggle();
+        if (++rightPaddle.score == 5) {
+            sounds.score.play();
+            paused = true;
+            window.location.href = "/pong/Victory?player1Score=" + leftPaddle.score + "&player2Score=" + rightPaddle.score;
+        }
+        else {
+            sounds.score.play();
+            startTurn = true;
+            paused = true;
+            startBall();
+            pauseServeToggle();
+        }
     } else if (ball.left > 490) {
-        leftPaddle.score++;
-        sounds.score.play();
-        startTurn = true;
-        paused = true;
-        startBall();
-        pauseServeToggle();
+        if (++leftPaddle.score == 5) {
+            sounds.score.play();
+            paused = true;
+            window.location.href = "/pong/Victory?player1Score=" + leftPaddle.score + "&player2Score=" + rightPaddle.score;
+        }
+        else {
+            sounds.score.play();
+            startTurn = true;
+            paused = true;
+            startBall();
+            pauseServeToggle();
+        }
     }
 }
    

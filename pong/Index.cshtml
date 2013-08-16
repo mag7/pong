@@ -1,5 +1,48 @@
-﻿@{
+﻿@using DAL;
+
+@{
     Page.Title = "Pongshore";
     Layout = "_Layout.cshtml";
+    string success = "";
+    if (IsPost)
+    {
+        UserDAO dao = new UserDAO();
+        User user1 = dao.GetUser(Request["email1"]);
+        User user2 = dao.GetUser(Request["email2"]);
+        if (user1 != null && user2 != null)
+        {
+            if (Request["password1"] == user1.Password && Request["password2"] == user2.Password)
+            {
+                Session["User1ID"] = user1.ID;
+                Session["User2ID"] = user2.ID;
+                Response.Redirect("Game?level=0");
+            }
+        }
+        else if(user1 != null)
+        {
+            if(Request["password1"] == user1.Password)
+            {
+                Session["User1ID"] = user1.ID;
+                Response.Redirect("Menu.cshtml");
+            }
+        }
+    }
+    string getParameter = Request.QueryString["myParameter"];
 }
 
+<label>@success</label>
+<label>@getParameter</label>
+<div id="LoginScreen">
+    <form name="login" action="Index" method="post">
+        Player 1 Email:
+        <input type="text" name="email1" /><br />
+        Password:
+        <input type="password" name="password1" /><br />
+        <br />
+        Player 2 Email:
+        <input type="text" name="email2" /><br />
+        Password:
+        <input type="password" name="password2" /><br />
+        <input type="submit" name="submit" />
+    </form>
+</div>
