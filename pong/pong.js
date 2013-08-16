@@ -4,11 +4,26 @@ leftPaddle = $();
 rightPaddle = $();
 ball = $();
 var gameScreen = $();
+var sounds = {
+    score: null,
+    wallbounce: null,
+    paddlebounce: null
+}
+serve = $();
+pause = $();
+var paused = false;
+var startTurn = false;
+    
 $(document).ready(function () {
     leftPaddle = $(".left");
     rightPaddle = $(".right");
     ball = $(".ball");
     gameScreen = $(".gameScreen");
+    serve = $(".serve");
+    pause = $(".pause");
+    sounds.score = $(".scoresound")[0];
+    sounds.wallbounce = $(".wallsound")[0];
+    sounds.paddlebounce = $(".paddlesound")[0];
     setupInput();
     startGame();
 });
@@ -30,7 +45,8 @@ function startGame() {
     initializeGameObject(rightPaddle);
     leftPaddle.score = leftPaddle.score || 0;
     rightPaddle.score = rightPaddle.score || 0;
-    startBall();
+    startTurn = true;
+    pause.hide();
     gameLoop();
 }
 
@@ -51,20 +67,21 @@ function startBall() {
         ball.xSpeed = (.5 + (Math.random() / 2)) * 3;
     }
 }
+
 function setupInput() {
     $(document).keydown(function (e) {
         switch (e.which) {
             case 40:
-                rightPaddle.ySpeed = 5;
+                rightPaddle.ySpeed = rightPaddle.ySpeed || 5;
                 break;
             case 38:
-                rightPaddle.ySpeed = -5;
+                rightPaddle.ySpeed = rightPaddle.ySpeed || - 5;
                 break;
             case 81:
-                leftPaddle.ySpeed = -5;
+                leftPaddle.ySpeed = leftPaddle.ySpeed || - 5;
                 break;
             case 65:
-                leftPaddle.ySpeed = 5;
+                leftPaddle.ySpeed = leftPaddle.ySpeed || 5;
                 break;
             default:
                 break;
@@ -88,12 +105,43 @@ function setupInput() {
                 break;
         }
     });
+    serve.click(function (e) {
+        if (startTurn) {
+            startBall();
+            startTurn = false;
+            paused = false;
+            gameLoop();
+            pauseServeToggle();
+        }
+    });
+    pause.click(function (e) {
+        if (!startTurn) {
+            if (paused) {
+                paused = false;
+                gameLoop();
+            }
+            else {
+                paused = true;
+            }
+        }
+    });
+
+
 }
+
+function pauseServeToggle() {
+    serve.toggle();
+    pause.toggle();
+}
+
 function gameLoop() {
     update();
     draw();
-    setTimeout(gameLoop, 1000 / 30);
+    if (!paused) {
+        setTimeout(gameLoop, 1000 / 30);
+    }
 }
+
 function update() {
     checkPaddleBoundaries(leftPaddle, rightPaddle);
     leftPaddle.top += leftPaddle.ySpeed;
@@ -106,6 +154,8 @@ function update() {
     }
     ball.top += ball.ySpeed;
     ball.left += ball.xSpeed;
+    leftPaddle.ySpeed *= 1.05;
+    rightPaddle.ySpeed *= 1.05;
 }
 
 function checkPaddleBoundaries() {
@@ -120,25 +170,36 @@ function checkPaddleBoundaries() {
 
 function checkBallBoundaries(ball) {
     if (ball.top <= 0 || ball.top >= 490) {
+        sounds.wallbounce.play();
         ball.ySpeed *= -1;
     }
     if (ball.left < 0) {
         rightPaddle.score++;
+        sounds.score.play();
+        startTurn = true;
+        paused = true;
         startBall();
+        pauseServeToggle();
     } else if (ball.left > 490) {
         leftPaddle.score++;
+        sounds.score.play();
+        startTurn = true;
+        paused = true;
         startBall();
+        pauseServeToggle();
     }
 }
    
 function handleCollision(ball, paddle) {
     if (ball.top >= paddle.top - ball.height / 2 && ball.top <= paddle.top + paddle.height + ball.height / 2) {
         if (ball.left <= paddle.left + paddle.width && ball.left >= paddle.left) {
+            sounds.paddlebounce.play();
             ball.xSpeed *= -1.1;
-            ball.ySpeed *= 1.1;
+            ball.ySpeed = (ball.ySpeed * 1.1) + (paddle.ySpeed / 6);
         } else if (ball.left >= paddle.left - ball.width && ball.left < paddle.left) {
+            sounds.paddlebounce.play();
             ball.xSpeed *= -1.1;
-            ball.ySpeed *= 1.1;
+            ball.ySpeed = (ball.ySpeed * 1.1) + (paddle.ySpeed / 6);
         }
     }
 }
@@ -147,6 +208,12 @@ function handleCollision(ball, paddle) {
 function draw() {
     $(".leftscore").html(leftPaddle.score);
     $(".rightscore").html(rightPaddle.score);
+    if (paused) {
+        pause.html("Continue");
+    }
+    else {
+        pause.html("Pause");
+    }
     drawGameObject(leftPaddle);
     drawGameObject(rightPaddle);
     drawGameObject(ball);

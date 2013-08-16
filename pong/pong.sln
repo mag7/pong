@@ -5,14 +5,14 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "pong", ".", "{4A4938D9-0D40
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
 		Debug.AspNetCompiler.VirtualPath = "/pong"
-		Debug.AspNetCompiler.PhysicalPath = "..\..\..\..\Desktop\pong\"
+		Debug.AspNetCompiler.PhysicalPath = "..\pong\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\pong\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/pong"
-		Release.AspNetCompiler.PhysicalPath = "..\..\..\..\Desktop\pong\"
+		Release.AspNetCompiler.PhysicalPath = "..\pong\"
 		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\pong\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
@@ -21,13 +21,22 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "pong", ".", "{4A4938D9-0D40
 		VWDPort = "50127"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "..\DAL\DAL.csproj", "{545552F5-67E0-4BBB-9486-ACC8835A4FAF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{4A4938D9-0D40-456C-9B30-9CEFD4CB17E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4A4938D9-0D40-456C-9B30-9CEFD4CB17E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A4938D9-0D40-456C-9B30-9CEFD4CB17E0}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A4938D9-0D40-456C-9B30-9CEFD4CB17E0}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{545552F5-67E0-4BBB-9486-ACC8835A4FAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{545552F5-67E0-4BBB-9486-ACC8835A4FAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{545552F5-67E0-4BBB-9486-ACC8835A4FAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{545552F5-67E0-4BBB-9486-ACC8835A4FAF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
