@@ -43,7 +43,14 @@ namespace DAL
         public User GetUser(int userID)
         {
             SqlParameter[] parameter = new SqlParameter[] { new SqlParameter("@ID", userID) };
-            return Read("Get_User", parameter).SingleOrDefault();
+            User user =  Read("Get_User", parameter).SingleOrDefault();
+            if (user == null)
+            {
+                User computer = new User();
+                computer.Email = "Computer";
+                return computer;
+            }
+            return user;
         }
 
         public User GetUser(string email)

@@ -3,45 +3,83 @@
 @{
     Page.Title = "Title goes here";
     Layout = "_Layout.cshtml";
-    
+
     int player1Score = Convert.ToInt16(Request.QueryString["player1Score"]);
     int player2Score = Convert.ToInt16(Request.QueryString["player2Score"]);
-    
+    int winnerScore = 0;
+    int loserScore = 0;
+
     GameDAO game = new GameDAO();
     UserDAO user = new UserDAO();
 
     int player1ID = Convert.ToInt32(Session["User1ID"]);
     int player2ID = Convert.ToInt32(Session["User2ID"]);
-    
+
     user.UpdateGamesPlayed(player1ID);
     user.UpdateGamesPlayed(player2ID);
-    if(player1Score == 5) {
+    User winner;
+    User loser;
+    if (player1Score == 5)
+    {
         game.GenerateGame(player1ID, player2ID, player1Score, player2Score);
         user.UpdateGamesWon(player1ID);
-        User player1 = user.GetUser(player1ID);
-        List<Game> player1Games = game.GetGamesByUser(player1ID);   
+        winner = user.GetUser(player1ID);
+        loser = user.GetUser(player2ID);
+        winnerScore = player1Score;
+        loserScore = player2Score;
+
+        if (loser == null)
+        {
+            loser.Email = "Computer";
+        }
     }
-    else {
+    else
+    {
         game.GenerateGame(player2ID, player1ID, player2Score, player1Score);
         user.UpdateGamesWon(player2ID);
-        User player2 = user.GetUser(player2ID);
-        if(player2ID != null)
-        {
-            List<Game> player2Games = game.GetGamesByUser(player2ID);
-        }
+        winner = user.GetUser(player2ID);
+        loser = user.GetUser(player1ID);
+        winnerScore = player2Score;
+        loserScore = player1Score;
+
+        //if (winner == null)
+        //{
+        //    User winner = new User();
+        //    winner.Email = "Computer";
+        //}
     }
 }
 
-<audio class ="victorysound"src="boing_x.wav" type="audio/wav"></audio>
-<audio class ="losersound"src="boing_x.wav" type="audio/wav"></audio>
-<div id="victoryscreen">
-    <label class="user1"></label>
-    <label class="user2"></label>
-    <label class ="leftscore"></label>
-    <label class ="rightscore"></label>
-    <span class ="paddle left"></span>
-    <span class ="paddle right"></span>
-    <span class ="ball"></span>
-    <span class="button serve">Serve</span>
-    <span class="button pause">Pause</span>
+
+<audio class="victorysound" src="boing_x.wav" type="audio/wav"></audio>
+<audio class="losersound" src="boing_x.wav" type="audio/wav"></audio>
+<div id="VictoryScreen">
+    <div id="Winner" class="victory">
+        Winner: @winner.Email<br />        
+        Score: @winnerScore<br />
+        <table id="WinnerStats">
+            <tr>
+                <th>Games Won</th>
+                <th>Games Played</th>
+            </tr>
+            <tr>
+                <td>@winner.GamesWon</td>
+                <td>@winner.GamesPlayed</td>
+            </tr>
+        </table>
+    </div>
+    <div id="Loser" class="victory">
+        Loser: @loser.Email<br />
+        Score: @loserScore<br />
+        <table id="LoserStats">
+            <tr>
+                <th>Games Won</th>
+                <th>Games Played</th>
+            </tr>
+            <tr>
+                <td>@loser.GamesWon</td>
+                <td>@loser.GamesPlayed</td>
+            </tr>
+        </table>
+    </div>
 </div>

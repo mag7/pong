@@ -78,3 +78,21 @@
 form {
     vertical-align:middle;
 }
+
+#VictoryScreen {
+    width: 500px;
+    height: 500px;
+}
+
+#Winner {
+    background-color:lightgreen;
+    float:left;
+}
+
+#Loser {
+    background-color:lightgreen;
+    float: right;
+}
+
+table {
+}

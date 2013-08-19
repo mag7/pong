@@ -50,7 +50,7 @@ function startGame() {
     rightPaddle.score = rightPaddle.score || 0;
     startTurn = true;
     pause.hide();
-    gameLoop();
+    
 }
 
 function startBall() {
@@ -71,17 +71,22 @@ function startBall() {
     }
 }
 
-function computerTracking(ball, rightPaddle) {
-    if (ball.top + (ball.height/2) < rightPaddle.top + (rightPaddle.height / 2)) {
-        rightPaddle.ySpeed = speed*-1;
+function computerTracking() {
+    spin = 1;
+    if(ball.left > rightPaddle.left - 15 && Math.random <.5){        
+            spin = -1;        
     }
-    else if (ball.top + (ball.height/2) > rightPaddle.top + (rightPaddle.height / 2)) {
-        rightPaddle.ySpeed = speed;
-    }
-    else {
-        rightPaddle.ySpeed = 0;
-    }
+    if (ball.top + (ball.height / 2) < rightPaddle.top + (rightPaddle.height * .2)) {        
+        rightPaddle.ySpeed = spin * speed*-1;
+    }else if (ball.top + (ball.height / 2) > rightPaddle.top + (rightPaddle.height * .8)) {
+        rightPaddle.ySpeed = spin * speed;
+    }else {
+        if (Math.abs(ball.ySpeed) <= speed) {
+            rightPaddle.ySpeed = spin * ball.ySpeed;
+        }
+    }    
 }
+
 
 function setupInput() {
     $(document).keydown(function (e) {
@@ -179,7 +184,7 @@ function update() {
     ball.left += ball.xSpeed;
     leftPaddle.ySpeed *= 1.05;
     if (speed > 0) {
-        computerTracking(ball, rightPaddle);
+        computerTracking();
     }
     else {
         rightPaddle.ySpeed *= 1.05;
